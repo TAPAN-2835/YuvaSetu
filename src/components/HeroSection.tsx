@@ -49,10 +49,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onStartJourney }) => {
             {t('hero.subtitle')}
           </p>
 
-          {/* Tagline */}
-          <p className="text-base text-gray-500 mb-10 max-w-2xl mx-auto">
-            {t('hero.tagline')}
-          </p>
+       
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
