@@ -22,16 +22,17 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="bg-white rounded-lg shadow-md p-2 border border-gray-100">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-orange-500 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-sm">YS</span>
-              </div>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">YuvaSetu.AI</h1>
-            </div>
-          </Link>
+<Link to="/" className="flex items-center space-x-3">
+  <img
+    src="/logo.svg"
+    alt="YuvaSetu.AI Logo"
+    className="h-10 w-auto sm:h-12 md:h-14 lg:h-16"
+  />
+  <div>
+    <h1 className="text-xl sm:text-2xl font-bold text-gray-900">YuvaSetu.AI</h1>
+  </div>
+</Link>
+
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
