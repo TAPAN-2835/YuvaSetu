@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Phone, Mail, User, Lock } from 'lucide-react';
+import { ArrowLeft, Phone, Mail, User } from 'lucide-react';
 import { useI18n } from '../i18n/i18n';
 import { sendOTP, verifyOTP, setUser } from '../lib/auth';
 
@@ -10,6 +10,8 @@ const Signup: React.FC = () => {
   const [step, setStep] = useState(1); // 1: Enter details, 2: Enter OTP
   const [formData, setFormData] = useState({
     name: '',
+    age: '',
+    gender: '',
     phoneOrEmail: ''
   });
   const [otp, setOTP] = useState('');
@@ -20,7 +22,13 @@ const Signup: React.FC = () => {
 
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.phoneOrEmail.trim()) return;
+    if (!formData.name.trim() || !formData.phoneOrEmail.trim() || !formData.age || !formData.gender) return;
+
+    const ageNum = parseInt(formData.age, 10);
+    if (isNaN(ageNum) || ageNum < 20 || ageNum > 24) {
+      setError('Only users aged 20 to 24 can sign up.');
+      return;
+    }
 
     setLoading(true);
     setError('');
@@ -49,8 +57,8 @@ const Signup: React.FC = () => {
     try {
       const result = await verifyOTP(formData.phoneOrEmail, otp);
       if (result.success && result.user) {
-        // Update user with provided name
-        const user = { ...result.user, name: formData.name };
+        // Update user with provided name, age, and gender
+        const user = { ...result.user, name: formData.name, age: formData.age, gender: formData.gender };
         setUser(user);
         navigate('/');
       } else {
@@ -97,6 +105,7 @@ const Signup: React.FC = () => {
 
           {step === 1 ? (
             <form onSubmit={handleSendOTP} className="space-y-6">
+              {/* Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('auth.name')}
@@ -116,6 +125,42 @@ const Signup: React.FC = () => {
                 </div>
               </div>
 
+              {/* Age */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Age (20–24 only)
+                </label>
+                <input
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
+                  className="block w-full px-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                  placeholder="Enter your age"
+                  min={20}
+                  max={24}
+                  required
+                />
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Gender
+                </label>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => setFormData(prev => ({ ...prev, gender: e.target.value }))}
+                  className="block w-full px-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                  required
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {/* Phone/Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('auth.phone')} / {t('auth.email')}
@@ -144,7 +189,7 @@ const Signup: React.FC = () => {
 
               <button
                 type="submit"
-                disabled={loading || !formData.name.trim() || !formData.phoneOrEmail.trim()}
+                disabled={loading || !formData.name.trim() || !formData.phoneOrEmail.trim() || !formData.age || !formData.gender}
                 className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 px-4 rounded-xl hover:shadow-lg transition-all font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Sending...' : t('auth.send')}
