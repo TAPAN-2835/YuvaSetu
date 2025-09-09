@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type Language = 'en' | 'hi';
+type Language = 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'pa';
 
 interface I18nContextType {
   language: Language;
@@ -8,7 +8,7 @@ interface I18nContextType {
   t: (key: string) => string;
 }
 
-const translations = {
+const translations: Record<Language, Record<string, string>> = {
   en: {
     // Header
     'nav.home': 'Home',
@@ -192,7 +192,15 @@ const translations = {
     'common.delete': 'मिटाएं',
     'common.edit': 'संपादित करें',
     'common.view': 'विवरण देखें',
-  }
+  },
+  bn: {},
+  ta: {},
+  te: {},
+  mr: {},
+  gu: {},
+  kn: {},
+  ml: {},
+  pa: {}
 };
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -209,7 +217,8 @@ export const I18nProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations['en']] || key;
+    const table = translations[language] || translations.en;
+    return table[key] || translations.en[key] || key;
   };
 
   return (
