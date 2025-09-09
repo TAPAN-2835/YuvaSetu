@@ -49,24 +49,3 @@ export const verifyOTP = async (phoneOrEmail: string, otp: string): Promise<{ su
   
   return { success: false };
 };
-
-export type ThemeMode = 'light' | 'dark';
-export type ContrastMode = 'normal' | 'high';
-
-export const getTheme = (): ThemeMode => {
-  const saved = localStorage.getItem('ys_theme');
-  return (saved as ThemeMode) || 'light';
-};
-
-export const setTheme = (mode: ThemeMode) => {
-  localStorage.setItem('ys_theme', mode);
-};
-
-export const getContrast = (): ContrastMode => {
-  const saved = localStorage.getItem('ys_contrast');
-  return (saved as ContrastMode) || 'normal';
-};
-
-export const setContrast = (mode: ContrastMode) => {
-  localStorage.setItem('ys_contrast', mode);
-};

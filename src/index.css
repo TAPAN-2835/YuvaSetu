@@ -1,17 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Dark mode and high-contrast helpers */
-:root {
-  color-scheme: light dark;
-}
-
-.hc * {
-  outline: 2px solid transparent;
-}
-
-.hc .focus-visible:focus-visible {
-  outline: 3px solid #ff9800;
-  outline-offset: 2px;
-}
